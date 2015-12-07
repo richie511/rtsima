@@ -64,8 +64,10 @@
 		}
 		
 		$.ajax({
-			type	: "POST",
+			
 			url		: "http://www.tokodumai.com/simpan.php",
+			type	: "POST",
+			crossDomain : true,
 			data	: "nik="+nik+
 					"&nama="+nama+
 					"&alamat="+alamat+
