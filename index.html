@@ -72,12 +72,17 @@
 					"&tgl="+tgl+
 					"&jam="+jam+
 					"&mode=ktp",
-			success	: function(data){
+			success: function(responseData, textStatus, jqXHR) {
 				$("#ktp_nama").val('');
 				$("#ktp_nik").val('');
 				$("#ktp_alamat").val('');
 				alert('Sukses Tambah item');
-				
+			},
+			error: function (responseData, textStatus, errorThrown) {
+				alert('POST failed.');
+				$("#ktp_nama").val('');
+				$("#ktp_nik").val('');
+				$("#ktp_alamat").val('');
 			}
 		});
 	}
