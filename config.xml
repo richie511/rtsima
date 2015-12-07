@@ -47,7 +47,7 @@
     <!-- Plugins -->
 
     <!-- Core plugins -->
-	<access origin="http://www.tokodumai.com" />
+	<access origin="http://tokodumai.com" />
     <gap:plugin name="org.apache.cordova.battery-status" source="npm" />
     <gap:plugin name="org.apache.cordova.camera" source="npm" />
     <gap:plugin name="org.apache.cordova.media-capture" source="npm" />
