@@ -12,7 +12,7 @@
         Selamat Datang di Kelurahan Ratusima Android
     </description>
 
-    <author href="http://tokodumai.com" email="initdeapache@ymail.com">
+    <author href="http://www.tokodumai.com" email="initdeapache@ymail.com">
         RIDHO TOBING
     </author>
 	<content src = "index.html"/>
@@ -47,7 +47,7 @@
     <!-- Plugins -->
 
     <!-- Core plugins -->
-	<access origin="http://tokodumai.com" />
+	<access origin="http://www.tokodumai.com" />
     <gap:plugin name="org.apache.cordova.battery-status" source="npm" />
     <gap:plugin name="org.apache.cordova.camera" source="npm" />
     <gap:plugin name="org.apache.cordova.media-capture" source="npm" />
