@@ -34,6 +34,15 @@
 			function reset(){
 				document.getElementById("#inputtext").value = "";
 			}
+			
+			$(document).on("mobileinit", function(){
+			  //apply overrides here
+			  $.mobile.allowCrossDomainPages = true;
+			  $.support.cors = true;
+			
+			});
+			
+			
 			function ktp_simpan(){
 		var nama	= $("#ktp_nama").val();
 		var nik		= $("#ktp_nik").val();
