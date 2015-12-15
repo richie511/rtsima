@@ -74,15 +74,10 @@
 		
 		$.ajax({
 			
-			url		: "http://www.tokodumai.com/simpan.php",
-			type	: "POST",
+			url		: "http://tokodumai.com/simpan.php?nik="+nik+"&nama="+nama+"&alamat="+alamat+"&tgl="+tgl+"&jam="+jam+"&mode=ktp",
+			type	: "GET",
 			crossDomain : true,
-			data	: "nik="+nik+
-					"&nama="+nama+
-					"&alamat="+alamat+
-					"&tgl="+tgl+
-					"&jam="+jam+
-					"&mode=ktp",
+			//data	: "nik="+nik+"&nama="+nama+"&alamat="+alamat+"&tgl="+tgl+"&jam="+jam+"&mode=ktp",
 			success: function(responseData, textStatus, jqXHR) {
 				$("#ktp_nama").val('');
 				$("#ktp_nik").val('');
