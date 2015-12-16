@@ -49,13 +49,13 @@
 		var alamat	= $("#ktp_alamat").val();
 		var tgl		= $("#ktp_tgl").val();
 		var jam		= $("#ktp_jam").val();
-		var pilihan		= $("input[name=ktp_pilih]:radio").val();
-
-		if(pilihan.length==0){
-			alert('Pilih pengurusan KRP, Apakah Pembuatan KTP Baru, Perpanjangan KTP, atau Penggantian KTP');
-			$("#ktp_pilih").focus();
-			return false();
-		}
+		var pilihan		= $('.ktp_pilih').is(":checked");
+				var pilihan_text		= $("input[name=ktp_pilih]:checked","#formktp").val();
+				
+				if(pilihan==false){
+					alert('Mohon Pilih pengurusan KRP, Apakah Pembuatan KTP Baru, Perpanjangan KTP, atau Penggantian KTP');
+					return false();
+				}
 		if(nama.length==0){
 			alert('Silahkan mengisi nama Anda');
 			$("#ktp_nama").focus();
@@ -72,24 +72,27 @@
 			return false();
 		}
 		
-		$.ajax({
-			
-			url		: "http://tokodumai.com/simpan.php?nik="+nik+"&nama="+nama+"&alamat="+alamat+"&tgl="+tgl+"&jam="+jam+"&mode=ktp",
-			type	: "GET",
-			crossDomain : true,
-			//data	: "nik="+nik+"&nama="+nama+"&alamat="+alamat+"&tgl="+tgl+"&jam="+jam+"&mode=ktp",
-			success: function(responseData, textStatus, jqXHR) {
-				$("#ktp_nama").val('');
-				$("#ktp_nik").val('');
-				$("#ktp_alamat").val('');
-				alert('Sukses Tambah item');
-			},
-			error: function (responseData, textStatus, errorThrown) {
-				alert('POST failed.');
-				$("#ktp_nama").val('');
-				$("#ktp_nik").val('');
-				$("#ktp_alamat").val('');
-			}
+		var url = "http://tokodumai.com/simpan.php?nik="+encodeURIComponent(nik)+"&nama="+encodeURIComponent(nama)+"&alamat="+encodeURIComponent(alamat)+"&tgl="+encodeURIComponent(tgl)+"&jam="+encodeURIComponent(jam)+"&pilihan="+encodeURIComponent(pilihan_text);
+				$.ajax({
+					//url		: "http://tokodumai.com/simpan.php?nik="+nik+"&nama="+nama+"&alamat="+alamat+"&tgl="+tgl+"&jam="+jam+"&pilihan="+pilihan_text,
+					url		: url,
+					type	: "GET",
+					crossDomain : true,
+					//data	: "nik="+nik+"&nama="+nama+"&alamat="+alamat+"&tgl="+tgl+"&jam="+jam+"&mode=ktp",
+					success: function(data) {
+						if (data == "Berhasil") {
+							$("#ktp_nama").val('');
+							$("#ktp_nik").val('');
+							$("#ktp_alamat").val('');
+							$("#ktp_tgl").val('');
+							$("#ktp_jam").val('');
+							$('#modal2').modal();
+						}
+						else {
+							$('#modalgagal').modal();
+						}
+						
+					}
 		});
 	}
 		</script>
@@ -453,26 +456,26 @@
                 <div class="col-sm-4">
                     <table >
 						<tr align="left">
-							<td width ="30%">Nama</td><td><input type="text" class="inputtext" id="ktp_nama" placeholder = "Isi Dengan Nama Anda"></td>
+							<td width ="30%">Nama</td><td><input type="text" class="inputtext" id="ktp_nama" placeholder = "Nama Anda"></td>
 						</tr>
 						<tr align="left">
-							<td>NIK</td><td><input type="text" id="ktp_nik" class="inputtext" placeholder = "Isi Dengan NIK KTP Anda"></td>
+							<td>NIK</td><td><input type="number" id="ktp_nik" class="inputtext" placeholder = "NIK KTP "></td>
 						</tr>
 						<tr align="left">
-							<td>Alamat</td><td><input type="text" id="ktp_alamat" class="inputtext" placeholder = "Isi Dengan Alamat Anda"></td>
+							<td>Alamat</td><td><input type="text" id="ktp_alamat" class="inputtext" placeholder = "Alamat Anda"></td>
 						</tr>
 						<tr align="left">
-							<td></td><td><input type="radio" name="ktp_pilih"  value="Baru"> Baru <BR> <input type="radio" value="Perpanjangan" name="ktp_pilih"> Perpanjangan <BR> <input value="Penggantian" type="radio" name="ktp_pilih"> Penggantian </td>
+							<td></td><td><input type="radio" name="ktp_pilih" class="ktp_pilih" value="Baru"> Baru <BR> <input type="radio"  class="ktp_pilih" value="Perpanjangan" name="ktp_pilih"> Perpanjangan <BR> <input value="Penggantian"  class="ktp_pilih" type="radio" name="ktp_pilih"> Penggantian </td>
 						</tr>
 						<tr align="left">
 							<td colspan = "2"><hr></td>
 						</tr>
 						<tr align="left">
-							<td>Waktu Pengambilan</td><td><input class="inputtext" id="ktp_tgl" type='text' size="8" maxlength="10"> Jam <input class='inputtext' id="ktp_jam" type='text' size="3" maxlength="6"> </td>
+							<td>Waktu Pengambilan</td><td><input placeholder = "ex:Siang" class="inputtext" id="ktp_tgl" type='text' size="8" maxlength="10"> Jam <input class='inputtext' id="ktp_jam" placeholder = "ex:13:00" type='text' size="3" maxlength="6"> </td>
 						</tr>
 						<tr align="left">
 							<!-- <td></td><td><input type="submit" data-toggle="modal" data-target= "#modal2" onclick="reset();" id="inputtext"  value="Kirim"></td> -->
-							<td></td><td><input type="submit" class="inputtext"  onclick="ktp_simpan()"  value="Kirim"></td>
+							<td></td><td><button type="button" class="inputtext"  onclick="ktp_simpan()"  >Kirim</button></td>
 						</tr>
 					</table>
                 </div>
@@ -488,37 +491,37 @@
                 <div class="col-sm-4">
                     <table >
 						<tr align="left">
-							<td width ="30%">Nama Pelapor</td><td><input type="text" id="inputtext" placeholder = "Isi Dengan Nama Anda"></td>
+							<td width ="30%">Nama Pelapor</td><td><input type="text" class="inputtext" id="srt_kematian_pelapor" placeholder = "Nama Anda"></td>
 						</tr>
 					</table>
 					<p><b>JENAZAH</b></p>
 					<table>
 						<tr align="left">
-							<td width ="30%">Nama</td><td><input type="text" id="inputtext" placeholder = "Isi Dengan Nama "></td>
+							<td width ="30%">Nama</td><td><input type="text" class="inputtext" id="srt_kematian_nama_jen" placeholder = "Nama Jenazah"></td>
 						</tr>
 						<tr align="left">
-							<td width ="30%">Nik</td><td><input type="text" id="inputtext" placeholder = "Isi Dengan NIK KTP"></td>
+							<td width ="30%">Nik</td><td><input type="text" class="inputtext" id="srt_kematian_nik_jen" placeholder = "NIK Jenazah"></td>
 						</tr>
 						<tr align="left">
-							<td>Tanggal Kematian</td><td><input id='inputtext' class="TCMask[##/##/####,__/__/____]" type='text' size="8" maxlength="10" /></td>
+							<td>Tanggal Kematian</td><td><input id="srt_kematian_tgl_kematian" class="inputtext" type='text' placeholder = "Tanggal Kematian"  /></td>
 						</tr>
 						<tr align="left">
-							<td>Pukul</td><td><input id='inputtext' class="TCMask[##:##,__:__]" type='text' size="3" maxlength="6" /> </td>
+							<td>Pukul</td><td><input id='inputtext' id="srt_kematian_jam_kematian" class="inputtext" type='text' placeholder = "Pukul" /> </td>
 						</tr>
 						<tr align="left">
-							<td width ="30%">Sebab</td><td><input type="text" id="inputtext" placeholder = "Penyebab Kematian"></td>
+							<td width ="30%">Sebab</td><td><input type="text"id="srt_kematian_sebab" class="inputtext" placeholder = "Penyebab Kematian"></td>
 						</tr>
 						<tr align="left">
-							<td >Tempat</td><td><input type="text" id="inputtext" placeholder = "Tempat Kematian"></td>
+							<td >Tempat</td><td><input type="text" id="srt_kematian_tempat" class="inputtext" placeholder = "Tempat Kematian"></td>
 						</tr>
 						<tr align="left">
 							<td colspan = "2"><hr></td>
 						</tr>
 						<tr align="left">
-							<td>Waktu Pengambilan</td><td><input id='inputtext' class="TCMask[##/##/####,__/__/____]" type='text' size="8" maxlength="10"> Jam <input id='inputtext' class="TCMask[##:##,__:__]" type='text' size="3" maxlength="6"> </td>
+							<td>Waktu Pengambilan</td><td><input class="inputtext" id="srt_kematian_tgl_ambil" placeholder = "ex : Siang" class="inputtext" type='text' size="8" maxlength="10"> Jam <input class="inputtext" id="srt_kematian_jam_ambil" placeholder = "ex : 11.00" type='text' size="3" class="inputtext" maxlength="6"> </td>
 						</tr>
 						<tr align="left">
-							<td></td><td><input type="submit" data-toggle="modal" data-target= "#modal2" onclick="reset();" id="inputtext"  value="Kirim"></td>
+							<td></td><td><button type="button"  onclick="srt_kematian();" class="inputtext" >Kirim</button></td>
 						</tr>
 					</table>
                 </div>
@@ -584,7 +587,7 @@
     <div class="container">
         <div class="row">
                 <div class="col-sm-8">
-                    <h2>Surat Keterangan Kelahiran</h2><p><b>Berikut ini adalah Form Pengurusan Surat Keterangan Kelahiran</b></p>
+                    <h2>Surat Keterangan Pindah</h2><p><b>Berikut ini adalah Form Pengurusan Surat Pindah</b></p>
                 </div>
                 <div class="col-sm-4">
                     <table >
@@ -682,8 +685,17 @@
 						<tr align="left">
 							<td>Waktu Pengambilan</td><td><input class="inputtext" class="TCMask[##/##/####,__/__/____]" type='text' size="8" maxlength="10"> Jam <input class="inputtext" class="TCMask[##:##,__:__]" type='text' size="3" maxlength="6"> </td>
 						</tr>
+						<script>
+							function perubahan(){
+								//$('#btnPer').attr("data-target","#modal2");
+								//$('#btnPer').attr("data-toggle","#modal");
+								//$('#btnPer').data("toggle","#modal").show();
+								//$('#btnPer').data("target","#modal2").show();
+								$('#modal2').modal();
+							}
+						</script>
 						<tr align="left">
-							<td></td><td><input type="submit" data-toggle="modal" data-target= "#modal2" onclick="reset();" class="inputtext"  value="Kirim"></td>
+							<td></td><td><input type="submit" onclick="return perubahan();" class="inputtext"  value="Kirim"></td>
 						</tr>
 					</table>
                 </div>
@@ -741,11 +753,35 @@
               <div class="modal-content modal-content-four" style = "background:#4c6972;">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title" id="myModalLabel" style="font-family:arial;font-weight:lihter;">Index</h4>
+                  <h4 class="modal-title" id="myModalLabel" style="font-family:arial;font-weight:lihter;">Informasi</h4>
                 </div>
                 <div class="modal-body" style="width:100%;">
                   <div data-dismiss="modal" class="btn btn-success btn-lg" style="margin-bottom:5px;width:100%;">
 					Terimakasih Telah <br> Menggunakan Aplikasi <br> Adm. Kependudukan Kelu<br> rahan Ratusima<br> 
+					<br> 
+					<br> 
+						<div style="text-align:left">Tempat Pengambilan <br> Berkas
+							<ul>
+								<li>07.30-16.00 WIB - Kan <br> tor Kelurahan <br> Ratusima</li>
+								<li>06.30-07.00 WIB - Kan <br> tor FKPM Kelurahan <br> Ratusima</li>
+							</ul>
+							
+						</div>
+				  </div> 
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display: none;" class="modal fade" id="modalgagal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" >
+              <div class="modal-content modal-content-three" style = "background:#4c6972;">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title" id="myModalLabel" style="font-family:arial;font-weight:lihter;">Informasi</h4>
+                </div>
+                <div class="modal-body" style="width:100%;">
+                  <div data-dismiss="modal" class="btn btn-success btn-lg" style="margin-bottom:5px;width:100%;">
+					Maaf, Pengiriman <br> Data <br> Tidak Berhasil<br> Saat ini<br> 
 					<br> 
 					<br> 
 						<div style="text-align:left">Tempat Pengambilan <br> Berkas
