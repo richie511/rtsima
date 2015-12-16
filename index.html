@@ -72,8 +72,8 @@
 			return false();
 		}
 		
-		var url = "http://tokodumai.com/simpan.php?nik="+encodeURIComponent(nik)+"&nama="+encodeURIComponent(nama)+"&alamat="+encodeURIComponent(alamat)+"&tgl="+encodeURIComponent(tgl)+"&jam="+encodeURIComponent(jam)+"&pilihan="+encodeURIComponent(pilihan_text);
-				$.ajax({
+		var url = encodeURI("http://tokodumai.com/simpan.php?nik="+encodeURIComponent(nik)+"&nama="+encodeURIComponent(nama)+"&alamat="+encodeURIComponent(alamat)+"&tgl="+encodeURIComponent(tgl)+"&jam="+encodeURIComponent(jam)+"&pilihan="+encodeURIComponent(pilihan_text));
+		$.ajax({
 					//url		: "http://tokodumai.com/simpan.php?nik="+nik+"&nama="+nama+"&alamat="+alamat+"&tgl="+tgl+"&jam="+jam+"&pilihan="+pilihan_text,
 					url		: url,
 					type	: "GET",
